@@ -1,12 +1,12 @@
-# occe_api_v2
+# occe_api_v3
 [Occe.io](http://occe.io/) API python wrapper
   
 [Документация | Documentation](http://occe.io/info#api)  
 [Телеграм | Telegram](https://t.me/occeio)
   
-Примеры использования находятся в конце файла occe_api_v2.py,  
+Примеры использования находятся в конце файла occe_api_v3.py,  
 не забудьте указать свои API ключи в файле config.py  
-The usage examples are at the end of occe_api_v2.py file,  
+The usage examples are at the end of occe_api_v3.py file,  
 don't forget to specify your API keys in the file config.py  
 python 3.9  
   
