@@ -14,7 +14,7 @@ python 3.9
 If it useful you can make a donation  
   
 UFO: Uf9cegWUWTYAx3Y9M6fbCF7JfWmA4ZHVPR  
-TLR: TNnzmGeWjfG963gajw9K42kpw26VEVBE3L
-VQR: VQRgRevcdPYbtxQE3Lhsm6rYnnnRk1tgr9x9
+TLR: TNnzmGeWjfG963gajw9K42kpw26VEVBE3L  
+VQR: VQRgRevcdPYbtxQE3Lhsm6rYnnnRk1tgr9x9  
 IDNA: 0xf4eada2f1fe67e04420b5ae5e415bcef0bbe2aac  
 KRB: KhZnQRWPaVLiMqJPoULSDzPGMeqp5invzi4iVYmArnCTd1UiQU6CjgZVm5Xu2uFBTqTgqxjzTMJpGci7sR1fznpfT4kGPWm  
