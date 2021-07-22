@@ -90,18 +90,17 @@ while True:
                 if krb_balance > sell_amount:
                     print(occe.create_order('krb_vqr', 'sell', sell_amount, sell_price))
 
-        else:
-            if bid_amount > 2:
-                if buy_price < ask_price_round - 1:
-                    bid_amount_round = float(f'{bid_amount:.0}')
-                    buy_amount = bid_amount_round / 2
-                    vqr_balance = occe.get_balance('vqr')
-                    if vqr_balance > buy_amount:
-                        print(occe.create_order('krb_vqr', 'buy', buy_amount, buy_price))
+                else:
+                    if bid_amount > 2:
+                        if buy_price < ask_price_round - 1:
+                            bid_amount_round = float(f'{bid_amount:.0}')
+                            buy_amount = bid_amount_round / 2
+                            vqr_balance = occe.get_balance('vqr')
+                            if vqr_balance > buy_amount:
+                                print(occe.create_order('krb_vqr', 'buy', buy_amount, buy_price))
         print('-'*15)
         time.sleep(60)
 
     except requests.ConnectionError as connerr:
         print('Разрыв связи: [' + type(connerr).__name__ + ']', connerr)
         time.sleep(20)
-
