@@ -1,3 +1,5 @@
+import time
+import requests
 from config import TRADE
 from occe_api_v3 import Occe
 from coinpaprika import client
@@ -49,7 +51,6 @@ def get_order_book_info():
     bid_price = order_book['data']['buyOrders'][0]['price']    # float
     bid_amount = order_book['data']['buyOrders'][0]['amount']  # krb
     bid_total = order_book['data']['buyOrders'][0]['total']    # vqr
-    # bid_info = bid_price, bid_amount, bid_total
 
     vqr_ask_price = krb_median_price / ask_price
     vqr_ask_price_format = float(f'{vqr_ask_price:.4f}')
@@ -66,4 +67,41 @@ def get_order_book_info():
     return order_book_info
 
 
-pp(get_order_book_info())
+while True:
+    try:
+        extreme_orders = get_order_book_info()
+        pp(extreme_orders)
+        ask_amount = float(extreme_orders['ask_info']['krb_amount'])
+        krb_ask_price = float(extreme_orders['ask_info']['krb_price'])
+        bid_amount = float(extreme_orders['bid_info']['krb_amount'])
+        bid_price = float(extreme_orders['bid_info']['krb_price'])
+
+        ask_price_round = float(f'{krb_ask_price:.2}')
+        sell_price = ask_price_round - 1
+
+        bid_price_round = float(f'{bid_price:.2}')
+        buy_price = bid_price_round + 1
+
+        if ask_amount > 2:
+            if sell_price > bid_price_round + 1:
+                ask_amount_round = float(f'{ask_amount:.0}')
+                sell_amount = ask_amount_round / 2
+                krb_balance = occe.get_balance('krb')
+                if krb_balance > sell_amount:
+                    print(occe.create_order('krb_vqr', 'sell', sell_amount, sell_price))
+
+        else:
+            if bid_amount > 2:
+                if buy_price < ask_price_round - 1:
+                    bid_amount_round = float(f'{bid_amount:.0}')
+                    buy_amount = bid_amount_round / 2
+                    vqr_balance = occe.get_balance('vqr')
+                    if vqr_balance > buy_amount:
+                        print(occe.create_order('krb_vqr', 'buy', buy_amount, buy_price))
+        print('-'*15)
+        time.sleep(60)
+
+    except requests.ConnectionError as connerr:
+        print('Разрыв связи: [' + type(connerr).__name__ + ']', connerr)
+        time.sleep(20)
+
