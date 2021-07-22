@@ -1,5 +1,5 @@
 # occe_api_v3
-[Occe.io](http://occe.io/) API python wrapper
+[Occe.io](http://occe.io/) API v3 python wrapper
   
 [Документация | Documentation](http://occe.io/info#api)  
 [Телеграм | Telegram](https://t.me/occeio)
