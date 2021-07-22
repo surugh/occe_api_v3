@@ -83,12 +83,13 @@ while True:
         buy_price = bid_price_round + 1
 
         if ask_amount < bid_amount:
-            if sell_price > bid_price_round + 1:
-                ask_amount_round = float(f'{ask_amount:.0}')
-                sell_amount = ask_amount_round / 2
-                krb_balance = occe.get_balance('krb')
-                if krb_balance > sell_amount:
-                    print(occe.create_order('krb_vqr', 'sell', sell_amount, sell_price))
+            if ask_amount > 2:
+                if sell_price > bid_price_round + 1:
+                    ask_amount_round = float(f'{ask_amount:.0}')
+                    sell_amount = ask_amount_round / 2
+                    krb_balance = occe.get_balance('krb')
+                    if krb_balance > sell_amount:
+                        print(occe.create_order('krb_vqr', 'sell', sell_amount, sell_price))
 
         else:
             if bid_amount > 2:
