@@ -126,7 +126,7 @@ class Occe:
             withdraw_url = self.api_url + self.version + method + \
                            '?confirmationId=' + str(withdraw_confirm['confirmationId']) + \
                            '&code=' + str(withdraw_confirm['code']) + \
-                           '&balanceVersion=' + str(params['balanceVersion'])
+                           '&balanceVersion=' + str(withdraw_confirm['balanceVersion'])
             response = requests.post(withdraw_url, headers=self.headers, data=json.dumps(withdraw))
 
         # response.raise_for_status()
