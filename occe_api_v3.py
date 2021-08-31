@@ -249,7 +249,7 @@ class Occe:
         req = self.call_api('account/orders_history/' + pair.lower())
         return req
 
-    def get_orders_status(self, pair):
+    def get_orders_status(self, pair, order_id=False):
         """
         ex.
 
@@ -276,13 +276,21 @@ class Occe:
 
         :param pair: Pair in any case ex. krb_uah
         :type: str
-
+        
+        :param order_id: Order ID
+        :type: int or str
+        
         :return: Статус заказов пользователя на выбранной паре
             The status of the user's orders on the selected pair
         :type: dict
         """
         req = self.call_api(pair + '/orders/status')
-        return req
+        if order_id:
+            for order_info in req['data']['orders']:
+                if int(order_id) == order_info['order_id']:
+                    return order_info
+        else:
+            return req
 
     def cancel_order(self, pair, order_id):
         """
