@@ -1,24 +1,24 @@
 """
-Примеры использования находятся в конце этого файла,
-не забудьте указать свои API ключи в файле config.py
-The usage examples are at the end of this file,
-don't forget to specify your API keys in the file config.py
-python 3.9
+Примеры использования находятся в example.py,
+не забудьте указать свои API ключи в файле .env
+The usage examples are at example.py file,
+don't forget to specify your API keys in the file .env
 
 Если это полезно, вы можете сделать пожертвование
 If it useful you can make a donation
 
-UFO: Uf9cegWUWTYAx3Y9M6fbCF7JfWmA4ZHVPR
-TLR: TNnzmGeWjfG963gajw9K42kpw26VEVBE3L
+USDT:
+TRX-20: TJnXcu7XS5LCDMVG4XKYnVFgchUmmz24SS
+BEP-20: 0x855e3d62917e755464a1ae54f9d89831542fea9b
+ALTS:
+TRX: TJnXcu7XS5LCDMVG4XKYnVFgchUmmz24SS
 VQR: VQRgRevcdPYbtxQE3Lhsm6rYnnnRk1tgr9x9
-IDNA: 0xf4eada2f1fe67e04420b5ae5e415bcef0bbe2aac
+UFO: Uf9cegWUWTYAx3Y9M6fbCF7JfWmA4ZHVPR
 KRB: KhZnQRWPaVLiMqJPoULSDzPGMeqp5invzi4iVYmArnCTd1UiQU6CjgZVm5Xu2uFBTqTgqxjzTMJpGci7sR1fznpfT4kGPWm
 """
 
 import json
 import requests
-
-from config import TRADE, CASHIER
 
 
 class OcceException(Exception):
@@ -562,37 +562,3 @@ class Occe:
         data = dict(confirmationId=confirmation_id, code=code, balanceVersion=balance_version)
         req = self.call_api('currency/internal_withdraw', withdraw_confirm=data)
         return req
-
-
-if __name__ == '__main__':
-
-    # Примеры использования | Usage examples
-
-    occe = Occe(access_key=TRADE['access'], secret_key=TRADE['secret'])
-    occe_cashier = Occe(access_key=CASHIER['access'], secret_key=CASHIER['secret'])
-    try:
-        # print(occe_cashier.get_deposit_address('vqr'))
-        # print(occe_cashier.create_withdraw_confirmation('TRX', 5, 'TTjmYoZtbCPdjhwJ6tue5PPLpSRTBhK64d'))
-        # print(occe.get_server_time())
-        # print(occe.get_trade_history())
-        # print(occe.get_trade_history('krb_uah'))
-        # print(occe.get_market_orders('idna_usdt'))
-        # print(occe.get_balances())
-        # print(occe.get_balance('UAH'))
-        # print(occe.get_open_orders('uni_usdt'))
-        # print(occe.get_orders_history('idna_rub'))
-        # print(occe.get_orders_status('uni_usdt'))
-        # print(occe.get_markets_list(filter_by=True, quoted='btc'))
-        """
-        {'id': 39555, 'order_id': 40271, 'pair': 'tlr_rub', 'status': 'open',
-        'sum_buy': '159.289473680', 'sum_sell': '302.649000000',
-        'buy_remainder': '159.289473680', 'sell_remainder': '302.649000000',
-        'currency_buy': 'tlr', 'currency_sell': 'rub',
-        'created': '2021-05-14T19:24:58.638Z', 'user_id': '932c2e12-7b30-4961-a453-1d17aa8ddf5b'}
-        """
-        # print(occe.cancel_order('trx_uah', 44803))
-        # print(occe.create_order('trx_uah', 'sell', 6, 2))
-
-    except OcceException as ex_err:
-        print('! [' + type(ex_err).__name__ + ']\n! Ошибочный ответ с биржи\n'
-                                              '! Exchange API response error\n!', ex_err)
