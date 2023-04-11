@@ -97,9 +97,10 @@ class Occe:
         :type: dict
         """
         if params:
-            query_url = self.api_url + self.version + method + '?type=' + params['type'] + \
-                        '&amount=' + str(params['amount']) + '&price=' + str(params['price']) + \
-                        '&balanceVersion=' + str(params['balanceVersion'])
+            query_url = \
+                f"{self.api_url}{self.version}{method}?type{params['type']}" \
+                f"&amount={params['amount']}&price={params['price']}" \
+                f"&balanceVersion={params['balanceVersion']}"
         else:
             query_url = self.api_url + self.version + method
 
@@ -109,25 +110,34 @@ class Occe:
             if delete:
                 response = requests.delete(query_url, headers=self.headers)
             else:
-                response = requests.post(query_url, headers=self.headers, data=json.dumps(params))
+                response = requests.post(
+                    query_url, headers=self.headers, data=json.dumps(params)
+                )
 
         if withdraw:
-            cashier_url = self.api_url + self.version + method + '?currency=' + withdraw['currency'] + \
-                        '&amount=' + str(withdraw['amount']) + \
-                        '&receiverAddress=' + str(withdraw['receiverAddress']) + \
-                        '&network=' + str(withdraw['network']) + \
-                        '&saveAddress=' + str(withdraw['saveAddress']) + \
-                        '&name=' + str(withdraw['name']) + \
-                        '&paymentId=' + str(withdraw['paymentId']) + \
-                        '&internal=' + str(withdraw['internal'])
-            response = requests.post(cashier_url, headers=self.headers, data=json.dumps(withdraw))
+            cashier_url = \
+                f"{self.api_url}{self.version}{method}" \
+                f"?currency={withdraw['currency']}" \
+                f"&amount={withdraw['amount']}" \
+                f"&receiverAddress={withdraw['receiverAddress']}" \
+                f"&network={withdraw['network']}" \
+                f"&saveAddress={withdraw['saveAddress']}" \
+                f"&name={withdraw['name']}" \
+                f"&paymentId={withdraw['paymentId']}" \
+                f"&internal={withdraw['internal']}"
+            response = requests.post(
+                cashier_url, headers=self.headers, data=json.dumps(withdraw)
+            )
 
         if withdraw_confirm:
-            withdraw_url = self.api_url + self.version + method + \
-                           '?confirmationId=' + str(withdraw_confirm['confirmationId']) + \
-                           '&code=' + str(withdraw_confirm['code']) + \
-                           '&balanceVersion=' + str(withdraw_confirm['balanceVersion'])
-            response = requests.post(withdraw_url, headers=self.headers, data=json.dumps(withdraw))
+            withdraw_url = \
+                f"{self.api_url}{self.version}{method}" \
+                f"?confirmationId={withdraw_confirm['confirmationId']}" \
+                f"&code={withdraw_confirm['code']}" \
+                f"&balanceVersion={withdraw_confirm['balanceVersion']}"
+            response = requests.post(
+                withdraw_url, headers=self.headers, data=json.dumps(withdraw)
+            )
 
         # response.raise_for_status()
         obj = response.json()
@@ -305,7 +315,9 @@ class Occe:
         :return:  {"result": "success", "info": "Order was deleted"}
         :type: dict
         """
-        req = self.call_api(pair.lower() + '/orders/' + str(order_id), get=False, delete=True)
+        req = self.call_api(
+            pair.lower() + '/orders/' + str(order_id), get=False, delete=True
+        )
         return req
 
     def create_order(self, market, order_type, amount, price):
@@ -494,8 +506,9 @@ class Occe:
         req = self.call_api('currency/deposit_address/' + coin.lower())
         return req
 
-    def create_withdraw_confirmation(self, coin, amount, receiver_addr, usdt_network=None,
-                                     save_addr=False, name_addr=None, krb_paymentid=None,
+    def create_withdraw_confirmation(self, coin, amount, receiver_addr,
+                                     usdt_network=None, save_addr=False,
+                                     name_addr=None, krb_paymentid=None,
                                      internal=False):
         """
         ex.
@@ -529,7 +542,8 @@ class Occe:
                     amount=amount,
                     receiverAddress=receiver_addr,
                     network=usdt_network,
-                    saveAddress=save_addr, name=name_addr, paymentId=krb_paymentid,
+                    saveAddress=save_addr, name=name_addr,
+                    paymentId=krb_paymentid,
                     internal=internal)
 
         req = self.call_api('currency/withdraw_confirmation', withdraw=data)
@@ -545,7 +559,8 @@ class Occe:
         :type: dict
         """
         balance_version = str(self.get_balances()['data']['balanceVersion'])
-        data = dict(confirmationId=confirmation_id, code=code, balanceVersion=balance_version)
+        data = dict(confirmationId=confirmation_id, code=code,
+                    balanceVersion=balance_version)
         req = self.call_api('currency/withdraw', withdraw_confirm=data)
         return req
 
@@ -559,6 +574,7 @@ class Occe:
         :type: dict
         """
         balance_version = str(self.get_balances()['data']['balanceVersion'])
-        data = dict(confirmationId=confirmation_id, code=code, balanceVersion=balance_version)
+        data = dict(confirmationId=confirmation_id, code=code,
+                    balanceVersion=balance_version)
         req = self.call_api('currency/internal_withdraw', withdraw_confirm=data)
         return req

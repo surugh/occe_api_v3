@@ -16,7 +16,7 @@ if os.path.exists(dotenv_path):
     occe = Occe(access_key=TRADE_ACCESS, secret_key=TRADE_SECRET)
     occe_cashier = Occe(access_key=CASHIER_ACCESS, secret_key=CASHIER_SECRET)
     try:
-        print(occe_cashier.get_deposit_address('vqr'))
+        # print(occe_cashier.get_deposit_address('vqr'))
         # print(occe_cashier.create_withdraw_confirmation(
         # 'TRX', 5, 'TTjmYoZtbCPdjhwJ6tue5PPLpSRTBhK64d'
         # ))
@@ -24,7 +24,7 @@ if os.path.exists(dotenv_path):
         # print(occe.get_trade_history())
         # print(occe.get_trade_history('krb_uah'))
         # print(occe.get_market_orders('idna_usdt'))
-        # print(occe.get_balances())
+        print(occe.get_balances())
         # print(occe.get_balance('UAH'))
         # print(occe.get_open_orders('uni_usdt'))
         # print(occe.get_orders_history('idna_rub'))
