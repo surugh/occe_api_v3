@@ -31,16 +31,17 @@ class OcceException(Exception):
 
 class Occe:
 
-    def __init__(self, access_key=None, secret_key=None):
-        self.api_url_public = 'https://api.occe.io/public/'
-        self.api_url = 'https://api.occe.io'
-        self.access = access_key
-        self.secret = secret_key
-        self.version = '/v3/'
-        self.headers = {"x-api-key": secret_key}
+    def __init__(self, access_key: str = None,
+                 secret_key: str = None) -> None:
+        self.api_url_public: str = 'https://api.occe.io/public/'
+        self.api_url: str = 'https://api.occe.io'
+        self.access: str = access_key
+        self.secret: str = secret_key
+        self.version: str = '/v3/'
+        self.headers: dict = {"x-api-key": secret_key}
 
     @staticmethod
-    def __check_trade_api_response(resp_json):
+    def __check_trade_api_response(resp_json: dict) -> bool:
         """
         Поднимает исключение, если данные с биржи содержат ошибку
         Raise exception, if data from exchange contain error
@@ -68,8 +69,10 @@ class Occe:
 
         return retval
 
-    def call_api(self, method, params=None, get=True, delete=False,
-                 withdraw=None, withdraw_confirm=None):
+    def call_api(self, method: str, params: dict = None,
+                 get: bool = True, delete: bool = False,
+                 withdraw: dict = None,
+                 withdraw_confirm: dict = None) -> dict:
         """
         Через эту функцию проходят все запросы на приватный API
 
@@ -146,7 +149,7 @@ class Occe:
 
     ''' Trade User Methods '''
 
-    def get_balances(self):
+    def get_balances(self) -> dict:
         """
         ex.
 
@@ -171,7 +174,7 @@ class Occe:
         req = self.call_api('account/balance')
         return req
 
-    def get_balance(self, coin):
+    def get_balance(self, coin: str) -> float:
         """
 
         :param coin: Сокращенное название монеты в любом регистре
@@ -189,7 +192,7 @@ class Occe:
                 balance.append(info['value'])
         return balance[0]
 
-    def get_open_orders(self, pair):
+    def get_open_orders(self, pair: str) -> dict:
         """
         ex.
 
@@ -231,7 +234,7 @@ class Occe:
         req = self.call_api('account/orders/open/' + pair.lower())
         return req
 
-    def get_orders_history(self, pair):
+    def get_orders_history(self, pair: str) -> dict:
         """
         ex.
 
@@ -259,7 +262,7 @@ class Occe:
         req = self.call_api('account/orders_history/' + pair.lower())
         return req
 
-    def get_orders_status(self, pair, order_id=False):
+    def get_orders_status(self, pair: str, order_id: int = 0) -> dict:
         """
         ex.
 
@@ -302,7 +305,7 @@ class Occe:
         else:
             return req
 
-    def cancel_order(self, pair, order_id):
+    def cancel_order(self, pair: str, order_id: int) -> dict:
         """
             Отменяет ордер по ID на выбранной паре | Cancels an order by ID on the selected pair
 
@@ -316,11 +319,12 @@ class Occe:
         :type: dict
         """
         req = self.call_api(
-            pair.lower() + '/orders/' + str(order_id), get=False, delete=True
+            f"{pair.lower()}/orders/{order_id}", get=False, delete=True
         )
         return req
 
-    def create_order(self, market, order_type, amount, price):
+    def create_order(self, market: str, order_type: str, amount: int | float,
+                     price: int | float) -> dict:
         """
             Создает ордер на выбранной паре | Creates an order on the selected pair
 
@@ -348,21 +352,23 @@ class Occe:
                     price=price,
                     balanceVersion=balance_version)
 
-        req = self.call_api(market.lower() + '/orders', params=data, get=False)
+        req = self.call_api(
+            f"{market.lower()}/orders", params=data, get=False
+        )
         return req
 
     ''' Public Methods '''
 
-    def get_server_time(self):
+    def get_server_time(self) -> int:
         """
 
         :return: Server Time - unix timestamp
         :type: int
         """
-        req = requests.get(self.api_url_public + 'tradeview/time')
+        req = requests.get(f"{self.api_url_public}tradeview/time")
         return req.json()
 
-    def get_trade_history(self, pair=None):
+    def get_trade_history(self, pair: str = None) -> dict:
         """
         ex.
 
@@ -411,7 +417,8 @@ class Occe:
             req = requests.get(self.api_url_public + 'info/')
         return req.json()
 
-    def get_markets_list(self, filter_by=False, quoted=None, base=None):
+    def get_markets_list(self, filter_by: bool = False,
+                         quoted: str = None, base: str = None) -> list:
         """
             Получает список пар имеющихся на бирже | Gets a list of pairs available on the exchange
 
@@ -449,7 +456,7 @@ class Occe:
                 markets_list.append(pair)
         return markets_list
 
-    def get_market_orders(self, pair):
+    def get_market_orders(self, pair: str) -> dict:
         """
         ex.
 
@@ -482,15 +489,24 @@ class Occe:
         :return: Все активные ордера по выбранной паре | All active orders for the selected pair
         :type: dict
         """
-        req = requests.get(self.api_url_public + 'orders/' + pair.lower()).json()
-        sell = sorted(req['data']['sellOrders'], key=lambda order: order['price'])
-        buy = sorted(req['data']['buyOrders'], key=lambda order: order['price'], reverse=True)
-        orders = dict(result='success', data=dict(buyOrders=buy, sellOrders=sell))
+        req = requests.get(
+            f"{self.api_url_public}orders/{pair.lower()}"
+        ).json()
+        sell = sorted(
+            req['data']['sellOrders'], key=lambda order: order['price']
+        )
+        buy = sorted(
+            req['data']['buyOrders'], key=lambda order: order['price'],
+            reverse=True
+        )
+        orders = dict(
+            result='success', data=dict(buyOrders=buy, sellOrders=sell)
+        )
         return orders
 
     '''Cashier User Methods'''
 
-    def get_deposit_address(self, coin):
+    def get_deposit_address(self, coin: str) -> dict:
         """
         ex.
         {'result': 'success', 'data': {'address': 'address'}}
@@ -503,13 +519,17 @@ class Occe:
             Creates an address for the selected coin
         :type: dict
         """
-        req = self.call_api('currency/deposit_address/' + coin.lower())
+        req = self.call_api(f"currency/deposit_address/{coin.lower()}")
         return req
 
-    def create_withdraw_confirmation(self, coin, amount, receiver_addr,
-                                     usdt_network=None, save_addr=False,
-                                     name_addr=None, krb_paymentid=None,
-                                     internal=False):
+    def create_withdraw_confirmation(self, coin: str,
+                                     amount: int | float | str,
+                                     receiver_addr: str,
+                                     usdt_network: str = None,
+                                     save_addr: bool = False,
+                                     name_addr: str = None,
+                                     krb_paymentid: str = None,
+                                     internal: bool = False) -> dict:
         """
         ex.
             {'result': 'success',
@@ -549,7 +569,8 @@ class Occe:
         req = self.call_api('currency/withdraw_confirmation', withdraw=data)
         return req
 
-    def confirm_withdraw(self, confirmation_id, code):
+    def confirm_withdraw(self, confirmation_id: int | str,
+                         code: str) -> dict:
         """
         :param confirmation_id: from create_withdraw_confirmation
         :type: int or str
@@ -564,7 +585,8 @@ class Occe:
         req = self.call_api('currency/withdraw', withdraw_confirm=data)
         return req
 
-    def confirm_internal_withdraw(self, confirmation_id, code):
+    def confirm_internal_withdraw(self, confirmation_id: int | str,
+                                  code: str) -> dict:
         """
         :param confirmation_id: from create_withdraw_confirmation
         :type: int or str
