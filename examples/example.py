@@ -14,8 +14,8 @@ if os.path.exists(dotenv_path):
     CASHIER_SECRET = os.getenv('CASHIER_SECRET')
 
     # Примеры использования | Usage examples
-    occe = Occe(access_key=TRADE_ACCESS, secret_key=TRADE_SECRET)
-    occe_cashier = Occe(access_key=CASHIER_ACCESS, secret_key=CASHIER_SECRET)
+    occe = api.Occe(access_key=TRADE_ACCESS, secret_key=TRADE_SECRET)
+    occe_cashier = api.Occe(access_key=CASHIER_ACCESS, secret_key=CASHIER_SECRET)
     try:
         # print(occe_cashier.get_deposit_address('vqr'))
         # print(occe_cashier.create_withdraw_confirmation(
