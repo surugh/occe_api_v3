@@ -8,7 +8,7 @@ def readme():
 
 setup(
     name='occe_api',
-    version='1.0.0',
+    version='1.0.1',
     author='surugh',
     author_email='surugh@gmail.com',
     description='Python wrapper for occe.io stock',

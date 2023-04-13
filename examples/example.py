@@ -1,6 +1,7 @@
 import os
+
 from dotenv import load_dotenv
-from occe_api import Occe, OcceException
+from occe_api import api
 
 # from config import TRADE, CASHIER
 dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
