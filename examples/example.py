@@ -1,7 +1,7 @@
 import os
 
 from dotenv import load_dotenv
-from occe_api import api
+from occe_api import main
 
 # from config import TRADE, CASHIER
 dotenv_path = os.path.join(os.path.dirname(__file__), '.env')
@@ -14,8 +14,8 @@ if os.path.exists(dotenv_path):
     CASHIER_SECRET = os.getenv('CASHIER_SECRET')
 
     # Примеры использования | Usage examples
-    occe = api.Occe(access_key=TRADE_ACCESS, secret_key=TRADE_SECRET)
-    occe_cashier = api.Occe(access_key=CASHIER_ACCESS, secret_key=CASHIER_SECRET)
+    occe = main.Occe(access_key=TRADE_ACCESS, secret_key=TRADE_SECRET)
+    # occe_cashier = main.Occe(access_key=CASHIER_ACCESS, secret_key=CASHIER_SECRET)
     try:
         # print(occe_cashier.get_deposit_address('vqr'))
         # print(occe_cashier.create_withdraw_confirmation(
@@ -42,7 +42,7 @@ if os.path.exists(dotenv_path):
         # print(occe.cancel_order('trx_uah', 44803))
         # print(occe.create_order('trx_uah', 'sell', 6, 2))
 
-    except OcceException as ex_err:
+    except main.OcceException as ex_err:
         print('! [' + type(ex_err).__name__ + ']\n! Ошибочный ответ с биржи\n'
                                               '! Stock API response error\n!',
               ex_err)

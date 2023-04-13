@@ -1,9 +1,9 @@
 # occe_api_v3  
 pip install occe-api  
   
-from occe_api import api  
-occe = api.Occe(access_key=TRADE_ACCESS, secret_key=TRADE_SECRET)  
-occe_cashier = api.Occe(access_key=CASHIER_ACCESS, secret_key=CASHIER_SECRET)  
+from occe_api import main  
+occe = main.Occe(access_key=TRADE_ACCESS, secret_key=TRADE_SECRET)  
+occe_cashier = main.Occe(access_key=CASHIER_ACCESS, secret_key=CASHIER_SECRET)  
 
 [Occe.io](http://occe.io/) API v3 python wrapper
   
